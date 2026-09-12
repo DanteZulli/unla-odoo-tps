@@ -1,42 +1,44 @@
-# UNLa · Lic. en Sistemas · Programación de Sistemas ERP con Odoo
+# Trabajos prácticos — Programación de Sistemas ERP con Odoo
 
-Trabajos prácticos de la materia (guía v20250927b en `docs/`).
+Repositorio de código de la materia **Programación de Sistemas (ERP con Odoo)**,
+Licenciatura en Sistemas, UNLa. Cátedra: Gustavo Siciliano, Javier Vescio.
+Guía de TPs + programa (v20250927b) en `docs/`.
 
-## Estructura
+Acá se trackea el desarrollo de los módulos de cada unidad y la evidencia de lo
+probado en el entorno del alumno.
 
-- `docs/` — guía de TPs + programa de la materia.
-- `addons/` — módulos propios (`real_estate`, `estate_account`, ...).
+## Entorno utilizado
 
-Los módulos viven acá y se linkean en el entorno Doodba:
+Odoo 19 sobre Doodba, que es la configuración pedida por la cátedra
+("Odoo 18 o superior"):
+
+- Doodba Copier Template: https://github.com/Tecnativa/doodba-copier-template
+- Imagen base Doodba: https://github.com/Tecnativa/doodba
+
+La guía referencia Odoo 18 (puertos `18xxx`); este entorno corre Odoo 19,
+por lo que los puertos son `19xxx`: Odoo en `19069`, pgweb en `19081`,
+MailHog en `19025` y wdb en `19984`.
+
+## Cómo se vincula este repo con Odoo
+
+Los módulos viven en `addons/` de este repo y se exponen al Odoo local
+mediante enlaces simbólicos en la carpeta `private` del proyecto Doodba:
 
 ```
-~/Repositories/unla-odoo-tps/addons/<modulo>
-  -> symlink -> ~/Repositories/odoo19-doodba/odoo/custom/src/private/<modulo>
+unla-odoo-tps/addons/<modulo>
+  └─ symlink ─> odoo19-doodba/odoo/custom/src/private/<modulo>
 ```
 
-## Entorno
+Doodba detecta automáticamente los addons de `private`, así que todo lo que
+se desarrolla acá se instala y prueba en el Odoo local sin duplicar código.
+El proyecto Doodba local (`odoo19-doodba`) no se versiona acá: es solo el
+entorno de ejecución.
 
-Odoo 19 (vale por "18 o superior") con Doodba en `../odoo19-doodba`.
+## Contenido
 
-- Odoo: http://localhost:19069 (usuario `admin`, clave `admin`, DB `devel`)
-- Pgweb: http://localhost:19081 · MailHog: http://localhost:19025 · wdb: http://localhost:19984
-
-La guía menciona puertos `18xxx` (Odoo 18); acá es `19xxx` (Odoo 19).
-
-## Flujo de trabajo
-
-```bash
-cd ../odoo19-doodba
-just run                        # levantar entorno
-just scaffold <modulo> --path /tmp/scaff   # o crear directo en addons/
-# mover el módulo a ../unla-erp-tps/addons/ y symblinkearlo en private/
-just install <modulo>           # instalar/actualizar en DB devel
-just test <modulo>              # correr sus tests
-just logs odoo                  # ver logs
-```
-
-## Unidades
-
-- **U1**: módulo `real_estate` (modelos, vistas, menús, seguridad, relaciones).
-- **U2**: computados, onchange, ORM, constraints, herencia, `estate_account`.
-- **U3**: wizards, QWeb/reportes, cron, MailHog, pytest, traducciones.
+- `docs/` — guía de TPs, programa y evidencia (`docs/evidencia/`) con
+  capturas de lo probado en el entorno.
+- `addons/real_estate` — Unidad 1: inmobiliaria (modelos, vistas, menús,
+  seguridad, relaciones).
+- `addons/estate_account` — Unidad 2: facturación de ventas de propiedades
+  (hereda de `real_estate` y `account`).
