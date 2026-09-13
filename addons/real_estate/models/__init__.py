@@ -1,1 +1,1 @@
-# models placeholder (Act. 3: estate.property goes here)
+from . import estate_property
