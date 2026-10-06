@@ -118,9 +118,15 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
 
 ## Act. 16 — Categoría
 
-- Categoría `Inmobiliaria` (`ir.module.category`) referenciada por
-  `category_id` en ambos grupos: quedan agrupados en la vista de grupos.
-- ([1bcd20e](https://github.com/DanteZulli/unla-odoo-tps/commit/1bcd20ed8e09e8c25da088a3fbf5f30ee51c9af9))
+- Categoría `Inmobiliaria` (`ir.module.category`) con ambos grupos para
+  ubicarlos juntos.
+- Desvío Odoo 19 (guía = Odoo 18): `res.groups` ya no tiene `category_id` y
+  el install fallaba con `Invalid field 'category_id'`. Se adaptó al modelo
+  nuevo: privilegio `Inmobiliaria` (`res.groups.privilege` bajo la categoría)
+  + `privilege_id` en ambos grupos, con Manager implicando a Vendedor (mismo
+  patrón que Contabilidad en `account`).
+- ([1bcd20e](https://github.com/DanteZulli/unla-odoo-tps/commit/1bcd20ed8e09e8c25da088a3fbf5f30ee51c9af9),
+  [a96c19f](https://github.com/DanteZulli/unla-odoo-tps/commit/a96c19f))
 
 ## Act. 17 — Vista search
 
@@ -163,3 +169,22 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
   `expected_price`, `selling_price` y `date_availability`. Antes Odoo
   mostraba solo el nombre.
 - ([645caeb](https://github.com/DanteZulli/unla-odoo-tps/commit/645caeb))
+
+## Act. 23 — Formulario custom
+
+- Form con `state` en el header (`statusbar`), `name` en H1 con placeholder
+  "Nombre propiedad", dos grupos de dos campos (postal/disponibilidad y
+  esperado/venta) y notebook "Descripción" con `description` + dos subgrupos
+  (interior: habitaciones/superficie/fachadas/garage; jardín: jardín/área/
+  orientación).
+- ([64baf46](https://github.com/DanteZulli/unla-odoo-tps/commit/64baf46))
+
+## Act. 24 — Search: disponibles y por estado
+
+- Filtro `Disponibles` (`state` en Nuevo u Oferta recibida) + agrupar por
+  estado.
+- Desvío Odoo 19: el `<group expand="0" string="...">` no pasa la validación
+  RNG (`Invalid view ... search definition`); la referencia oficial usa
+  `<group>` pelado. Validado en local contra `search_view.rng`.
+- ([64baf46](https://github.com/DanteZulli/unla-odoo-tps/commit/64baf46),
+  [46277af](https://github.com/DanteZulli/unla-odoo-tps/commit/46277af))
