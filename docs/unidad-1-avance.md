@@ -121,3 +121,12 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
 - Categoría `Inmobiliaria` (`ir.module.category`) referenciada por
   `category_id` en ambos grupos: quedan agrupados en la vista de grupos.
 - ([1bcd20e](https://github.com/DanteZulli/unla-odoo-tps/commit/1bcd20ed8e09e8c25da088a3fbf5f30ee51c9af9))
+
+## Act. 17 — Vista search
+
+- Search en `views/estate_property_views.xml`: busca por `name`, `postcode`,
+  `expected_price`, `bedrooms`, `living_area` y `facades`.
+- Filtro `Mis propiedades` (`create_uid = uid`) y agrupar por creador, mes de
+  creación (`create_date:month`) y código postal. Odoo la levanta sola por
+  modelo, sin tocar la acción.
+- ([7d9303f](https://github.com/DanteZulli/unla-odoo-tps/commit/7d9303f))
