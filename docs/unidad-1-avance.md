@@ -143,3 +143,23 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
   dos quedan vacíos y el resto se copia. Se verifica duplicando antes y
   después del cambio (requiere Upgrade).
 - ([8dea7b4](https://github.com/DanteZulli/unla-odoo-tps/commit/8dea7b4))
+
+## Act. 20 — Fecha por defecto
+
+- `date_availability` por defecto = hoy + 3 meses, con
+  `default=lambda self: fields.Date.add(fields.Date.today(), months=3)`.
+  Se verifica creando un registro: la fecha ya viene cargada.
+- ([b3bdbdf](https://github.com/DanteZulli/unla-odoo-tps/commit/b3bdbdf))
+
+## Act. 21 — Campo `state`
+
+- `state` (Selection, requerido, default `new`, `copy=False`): Nuevo, Oferta
+  recibida, Oferta aceptada, Vendido, Cancelado. Al duplicar, vuelve a Nuevo.
+- ([b3bdbdf](https://github.com/DanteZulli/unla-odoo-tps/commit/b3bdbdf))
+
+## Act. 22 — Lista custom
+
+- Vista `list` propia con `name`, `postcode`, `bedrooms`, `living_area`,
+  `expected_price`, `selling_price` y `date_availability`. Antes Odoo
+  mostraba solo el nombre.
+- ([645caeb](https://github.com/DanteZulli/unla-odoo-tps/commit/645caeb))
