@@ -90,7 +90,7 @@
                     string="Disponibles"
                     domain="[('state', 'in', ['new', 'offer_received'])]"
                 />
-                <group expand="0" string="Agrupar por">
+                <group>
                     <filter
                         name="groupby_create_uid"
                         string="Creador"
