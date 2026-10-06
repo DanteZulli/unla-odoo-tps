@@ -130,3 +130,16 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
   creación (`create_date:month`) y código postal. Odoo la levanta sola por
   modelo, sin tocar la acción.
 - ([7d9303f](https://github.com/DanteZulli/unla-odoo-tps/commit/7d9303f))
+
+## Act. 18 — Duplicar
+
+- Solo UI: crear un registro y desde la lista Acción → Duplicar. Por defecto
+  copia todos los campos (incluye fecha y precio de venta), lo que motiva el
+  Act. 19.
+
+## Act. 19 — `copy=False`
+
+- `date_availability` y `selling_price` con `copy=False`: al duplicar, esos
+  dos quedan vacíos y el resto se copia. Se verifica duplicando antes y
+  después del cambio (requiere Upgrade).
+- ([8dea7b4](https://github.com/DanteZulli/unla-odoo-tps/commit/8dea7b4))
