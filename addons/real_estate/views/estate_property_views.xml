@@ -22,6 +22,53 @@
         </field>
     </record>
 
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Nombre propiedad" />
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="description" />
+                            <group>
+                                <group>
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                </group>
+                                <group>
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field
+                                        name="garden_orientation"
+                                    />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -38,6 +85,11 @@
                     string="Mis propiedades"
                     domain="[('create_uid', '=', uid)]"
                 />
+                <filter
+                    name="available"
+                    string="Disponibles"
+                    domain="[('state', 'in', ['new', 'offer_received'])]"
+                />
                 <group expand="0" string="Agrupar por">
                     <filter
                         name="groupby_create_uid"
@@ -53,6 +105,11 @@
                         name="groupby_postcode"
                         string="Código postal"
                         context="{'group_by': 'postcode'}"
+                    />
+                    <filter
+                        name="groupby_state"
+                        string="Estado"
+                        context="{'group_by': 'state'}"
                     />
                 </group>
             </search>
