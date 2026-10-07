@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Form explícito: el autogenerado colgaba el browser al abrir Tipos.
+         Ver Act. 28 en docs/unidad-1-avance.md. -->
     <record id="action_estate_property_type" model="ir.actions.act_window">
         <field name="name">Tipos de propiedad</field>
         <field name="res_model">estate.property.type</field>
