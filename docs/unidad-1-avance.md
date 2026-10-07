@@ -220,6 +220,9 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
   explícitos se estabilizó.
 - ([99bce12](https://github.com/DanteZulli/unla-odoo-tps/commit/99bce12),
   [c2777e4](https://github.com/DanteZulli/unla-odoo-tps/commit/c2777e4))
+- Actualización: el form explícito NO lo resolvió. Tipos abre pero no recibe
+  clicks (solo se sale con Tab); etiquetas anda joya con el mismo patrón de
+  vistas. Se parkea: queda como issue de entorno/browser, no del módulo.
 
 ## Act. 29 — Many2one en propiedad
 
