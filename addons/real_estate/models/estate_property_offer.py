@@ -1,11 +1,29 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Oferta sobre propiedad"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            prop = self.env["estate.property"].browse(vals["property_id"])
+            if prop.state not in ("new", "offer_received"):
+                raise UserError(
+                    "Solo se puede ofertar en propiedades Nuevas u "
+                    "Ofertas recibidas."
+                )
+            if vals["price"] <= prop.best_offer:
+                raise UserError(
+                    "La oferta debe superar la mejor oferta actual."
+                )
+        records = super().create(vals_list)
+        records.property_id.write({"state": "offer_received"})
+        return records
 
     price = fields.Float(string="Precio", required=True)
     status = fields.Selection(
