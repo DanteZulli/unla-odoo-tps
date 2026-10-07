@@ -144,3 +144,50 @@ constraints, comandos relacionales, herencia, wdb. Módulo `estate_account`.
   (`Command.set`) y "A estrenar" (crea+vincula con `Command.link` si no
   existe). Comandos relacionales sin escribir la tabla intermedia a mano.
 - ([a690d63](https://github.com/DanteZulli/unla-odoo-tps/commit/a690d63))
+
+## Act. 22 — Borrado restringido
+
+- `_unlink_if_new_or_cancelled` con `@api.ondelete()`: solo borrar en
+  "Nueva" o "Cancelada", `UserError` en otro caso.
+- ¿Por qué ondelete en vez de redefinir `unlink()`? `ondelete` es el hook
+  del framework dentro del flujo de borrado (incluye cascadas y batch);
+  redefinir `unlink()` a mano arriesga saltear esa lógica.
+- ([c759cb6](https://github.com/DanteZulli/unla-odoo-tps/commit/c759cb6))
+
+## Act. 23 — `create()` de ofertas
+
+- Redefinido con `@api.model_create_multi`: a. solo si supera la mejor
+  oferta; b. solo si la propiedad está "Nuevo" u "Oferta recibida";
+  c. la propiedad pasa a "Oferta recibida". Todo antes/después del
+  `super()` según corresponda, con `UserError` si no cumple.
+- Ojo: la oferta automática del Act. 20 (±30%) puede fallar acá si no
+  supera la mejor: es el comportamiento buscado, el error lo explica.
+- ([01f1bef](https://github.com/DanteZulli/unla-odoo-tps/commit/01f1bef))
+
+## Act. 24 — Herencia de `res.users`
+
+- `models/res_users.py` con `_inherit = "res.users"` y `property_ids`
+  One2many inverso de `salesman_id`.
+- ¿Reglas en `ir.model.access.csv`? No: no hay modelo nuevo, solo se
+  extiende uno existente; aplican sus accesos.
+- ([73488e2](https://github.com/DanteZulli/unla-odoo-tps/commit/73488e2))
+
+## Act. 25 — Página Propiedades en usuarios
+
+- `views/res_users_views.xml`: hereda `base.view_users_form` y agrega
+  página "Propiedades" con `property_ids` readonly (xpath a `//notebook`).
+- ([73488e2](https://github.com/DanteZulli/unla-odoo-tps/commit/73488e2))
+
+## Act. 26 — Módulo `estate_account`
+
+- `addons/estate_account` (`__init__.py` + `__manifest__.py`, depende de
+  `real_estate` y `account`). Instalarlo con ambos presentes.
+- ([f0aaedf](https://github.com/DanteZulli/unla-odoo-tps/commit/f0aaedf))
+
+## Act. 27 — Facturar al vender
+
+- Hereda `estate.property` y redefine "Marcar como vendida": tras el
+  `super()` crea `account.move` (`out_invoice` al comprador) con dos
+  líneas por comandos relacionales (propiedad a `selling_price` +
+  "Gastos administrativos" 100). Solo si hay comprador y precio.
+- ([1b7c5c4](https://github.com/DanteZulli/unla-odoo-tps/commit/1b7c5c4))
