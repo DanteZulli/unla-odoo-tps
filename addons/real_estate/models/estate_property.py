@@ -119,6 +119,14 @@ class EstateProperty(models.Model):
                 )
             record.state = "sold"
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "canceled"):
+                raise UserError(
+                    "Solo se pueden borrar propiedades Nuevas o Canceladas."
+                )
+
     def action_generate_offer(self):
         import random
 
