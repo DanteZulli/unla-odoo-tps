@@ -214,10 +214,12 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
 - Primer nivel "Ajustes" bajo "Inmobiliaria" + submenú "Tipos de propiedad"
   a la acción. El xml de tipos va antes del menú en el manifest (orden
   `data` por dependencias, como en Act. 6).
-- Nota de debugging: con solo vistas autogeneradas el browser se colgaba
-  al abrir Tipos (servidor 200, sin loop de red); con lista explícita se
-  estabilizó. Pendiente confirmar causa raíz del lado cliente/Wayland.
-- ([99bce12](https://github.com/DanteZulli/unla-odoo-tps/commit/99bce12))
+- Nota de debugging: etiquetas (`list` solo) andaba, tipos (`list,form`)
+  colgaba el browser: la diferencia era el formulario autogenerado, que el
+  cliente genera al abrir tipos aunque muestre la lista. Con lista + form
+  explícitos se estabilizó.
+- ([99bce12](https://github.com/DanteZulli/unla-odoo-tps/commit/99bce12),
+  [c2777e4](https://github.com/DanteZulli/unla-odoo-tps/commit/c2777e4))
 
 ## Act. 29 — Many2one en propiedad
 
