@@ -72,6 +72,17 @@ class EstateProperty(models.Model):
                 record.offer_ids.mapped("price"), default=0
             )
 
+    offer_partner_ids = fields.Many2many(
+        comodel_name="res.partner",
+        compute="_compute_offer_partner_ids",
+        string="Ofertantes",
+    )
+
+    @api.depends("offer_ids.partner_id")
+    def _compute_offer_partner_ids(self):
+        for record in self:
+            record.offer_partner_ids = record.offer_ids.partner_id
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
