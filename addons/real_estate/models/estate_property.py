@@ -44,6 +44,11 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many(
         comodel_name="estate.property.tag", string="Etiquetas"
     )
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+        string="Ofertas",
+    )
     state = fields.Selection(
         selection=[
             ("new", "Nuevo"),
