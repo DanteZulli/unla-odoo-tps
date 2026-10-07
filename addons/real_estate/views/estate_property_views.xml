@@ -54,6 +54,23 @@
                         <field name="name" placeholder="Nombre propiedad" />
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" />
+                    <div>
+                        <button
+                            name="action_remove_tags"
+                            string="Sacar etiquetas"
+                            type="object"
+                        />
+                        <button
+                            name="action_load_all_tags"
+                            string="Cargar todas las etiquetas"
+                            type="object"
+                        />
+                        <button
+                            name="action_new_tag"
+                            string="A estrenar"
+                            type="object"
+                        />
+                    </div>
                     <group>
                         <group>
                             <field name="property_type_id" />
@@ -93,6 +110,11 @@
                             </group>
                         </page>
                         <page string="Ofertas">
+                            <button
+                                name="action_generate_offer"
+                                string="Generar oferta automática"
+                                type="object"
+                            />
                             <field name="offer_ids" />
                         </page>
                     </notebook>

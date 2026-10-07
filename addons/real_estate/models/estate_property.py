@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import Command, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -118,6 +118,56 @@ class EstateProperty(models.Model):
                     "No se puede vender una propiedad cancelada."
                 )
             record.state = "sold"
+
+    def action_generate_offer(self):
+        import random
+
+        for record in self:
+            if not record.expected_price:
+                raise UserError(
+                    "La propiedad no tiene precio esperado para "
+                    "generar la oferta."
+                )
+            offered_ids = record.offer_ids.partner_id.ids
+            candidates = self.env["res.partner"].search(
+                [
+                    ("active", "=", True),
+                    ("id", "not in", offered_ids),
+                ]
+            )
+            if not candidates:
+                raise UserError(
+                    "No quedan contactos activos sin ofertar."
+                )
+            partner = random.choice(candidates)
+            price = record.expected_price * random.uniform(0.7, 1.3)
+            self.env["estate.property.offer"].create(
+                {
+                    "price": price,
+                    "partner_id": partner.id,
+                    "property_id": record.id,
+                }
+            )
+
+    def action_remove_tags(self):
+        for record in self:
+            record.tag_ids = [Command.clear()]
+
+    def action_load_all_tags(self):
+        all_tags = self.env["estate.property.tag"].search([])
+        for record in self:
+            record.tag_ids = [Command.set(all_tags.ids)]
+
+    def action_new_tag(self):
+        for record in self:
+            tag = self.env["estate.property.tag"].search(
+                [("name", "=", "A estrenar")], limit=1
+            )
+            if not tag:
+                tag = self.env["estate.property.tag"].create(
+                    {"name": "A estrenar"}
+                )
+            record.tag_ids = [Command.link(tag.id)]
     state = fields.Selection(
         selection=[
             ("new", "Nuevo"),
