@@ -81,3 +81,31 @@ constraints, comandos relacionales, herencia, wdb. Módulo `estate_account`.
 - ¿Se pueden agrupar por tipo? Sí: el related está almacenado, así que
   `group_by` sobre `property_type_id` funciona en la lista.
 - ([5fdf952](https://github.com/DanteZulli/unla-odoo-tps/commit/5fdf952))
+
+## Act. 13 — Onchange de jardín
+
+- `@api.onchange("garden")`: al tildar, `garden_area = 10`; al destildar,
+  `= 0`. Solo corre en el form sin guardar (UX, no validación).
+- ([11a02af](https://github.com/DanteZulli/unla-odoo-tps/commit/11a02af))
+
+## Act. 14 — Onchange no bloqueante de precio
+
+- `@api.onchange("expected_price")`: si < 10000 devuelve `warning` (no
+  bloquea el guardado, solo avisa posible error de tipeo). Se puede
+  depurar con `wdb.set_trace()` y verlo en el wdb de Doodba (`:19984`).
+- ([11a02af](https://github.com/DanteZulli/unla-odoo-tps/commit/11a02af))
+
+## Act. 15 — Botones Cancelar / Vendida
+
+- `action_cancel` y `action_sold` en el header, con `invisible` por estado
+  (frontend) + `UserError` en backend si se vende una cancelada o se
+  cancela una vendida. Al vender, ribbon "Vendida" (`web_ribbon` visible
+  solo en `sold`).
+- ([b696f14](https://github.com/DanteZulli/unla-odoo-tps/commit/b696f14))
+
+## Act. 16 — Aceptar oferta
+
+- `action_accept` en la lista de ofertas: marca Aceptada, carga comprador
+  y precio en la propiedad, la pasa a "oferta aceptada" y rechaza las
+  demás (`offer_ids - offer`).
+- ([3749784](https://github.com/DanteZulli/unla-odoo-tps/commit/3749784))
