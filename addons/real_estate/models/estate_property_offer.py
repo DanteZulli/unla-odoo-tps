@@ -1,4 +1,6 @@
-from odoo import fields, models
+from datetime import timedelta
+
+from odoo import api, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -19,3 +21,24 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one(
         comodel_name="estate.property", string="Propiedad", required=True
     )
+    validity = fields.Integer(string="Validez (días)", default=7)
+    date_deadline = fields.Date(
+        string="Fecha límite",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+    )
+
+    @api.depends("create_date", "validity")
+    def _compute_date_deadline(self):
+        for offer in self:
+            if offer.create_date:
+                base = offer.create_date.date()
+            else:
+                base = fields.Date.today()
+            offer.date_deadline = base + timedelta(days=offer.validity)
+
+    def _inverse_date_deadline(self):
+        for offer in self:
+            if offer.create_date and offer.date_deadline:
+                base = offer.create_date.date()
+                offer.validity = (offer.date_deadline - base).days
