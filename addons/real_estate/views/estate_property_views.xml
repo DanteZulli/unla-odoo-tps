@@ -29,9 +29,27 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button
+                        name="action_cancel"
+                        string="Cancelar"
+                        type="object"
+                        invisible="state not in ['new', 'offer_received']"
+                    />
+                    <button
+                        name="action_sold"
+                        string="Marcar como vendida"
+                        type="object"
+                        invisible="state in ['sold', 'canceled']"
+                    />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Vendida"
+                        bg_color="bg-success"
+                        invisible="state != 'sold'"
+                    />
                     <h1>
                         <field name="name" placeholder="Nombre propiedad" />
                     </h1>

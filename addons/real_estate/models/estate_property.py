@@ -91,6 +91,22 @@ class EstateProperty(models.Model):
                     ),
                 }
             }
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(
+                    "No se puede cancelar una propiedad vendida."
+                )
+            record.state = "canceled"
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "canceled":
+                raise UserError(
+                    "No se puede vender una propiedad cancelada."
+                )
+            record.state = "sold"
     state = fields.Selection(
         selection=[
             ("new", "Nuevo"),
