@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -49,6 +49,16 @@ class EstateProperty(models.Model):
         inverse_name="property_id",
         string="Ofertas",
     )
+    total_area = fields.Float(
+        string="Superficie total",
+        compute="_compute_total_area",
+        store=True,
+    )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
     state = fields.Selection(
         selection=[
             ("new", "Nuevo"),
