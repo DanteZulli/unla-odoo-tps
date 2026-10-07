@@ -33,6 +33,14 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
 
+    _sql_constraints = [
+        (
+            "partner_property_uniq",
+            "UNIQUE(partner_id, property_id)",
+            "Un ofertante no puede ofertar dos veces por la misma propiedad.",
+        ),
+    ]
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for offer in self:
