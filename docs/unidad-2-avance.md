@@ -52,3 +52,32 @@ constraints, comandos relacionales, herencia, wdb. Módulo `estate_account`.
 - Se sacó `editable="top"` de la lista de ofertas: ahora se crean desde su
   formulario (abre paso a validez/límite del Act. 9+).
 - ([1dfe4de](https://github.com/DanteZulli/unla-odoo-tps/commit/1dfe4de))
+
+## Act. 9 — Validez y fecha límite
+
+- En `estate.property.offer`: `validity` Integer default 7 + `date_deadline`
+  Date, ambos agregados a la lista de ofertas.
+- ([e6be7e2](https://github.com/DanteZulli/unla-odoo-tps/commit/e6be7e2))
+
+## Act. 10 — Cómputo con inverso
+
+- `date_deadline = create_date + validity` (`compute`), pero si el usuario
+  carga la fecha se recalcula la validez (`inverse`). Sin registro creado
+  aún (`create_date` vacío) se usa hoy como base. Con `inverse=` el
+  computado deja de ser readonly (ver material teórico).
+- ([e6be7e2](https://github.com/DanteZulli/unla-odoo-tps/commit/e6be7e2))
+
+## Act. 11 — Related almacenado
+
+- `property_type_id` related a `property_id.property_type_id` con
+  `store=True`: trae el tipo sin duplicar datos y al estar almacenado
+  permite buscar y agrupar por él.
+- ([7c938f9](https://github.com/DanteZulli/unla-odoo-tps/commit/7c938f9))
+
+## Act. 12 — Formulario y menú de ofertas
+
+- Form de oferta (precio, ofertante, propiedad, tipo + validez, límite,
+  estado) + acción "Ofertas" (`list,form`) con menú bajo Anuncios.
+- ¿Se pueden agrupar por tipo? Sí: el related está almacenado, así que
+  `group_by` sobre `property_type_id` funciona en la lista.
+- ([5fdf952](https://github.com/DanteZulli/unla-odoo-tps/commit/5fdf952))
