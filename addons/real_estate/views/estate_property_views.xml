@@ -36,6 +36,7 @@
                     </h1>
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -61,6 +62,12 @@
                                         name="garden_orientation"
                                     />
                                 </group>
+                            </group>
+                        </page>
+                        <page string="Más info.">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="salesman_id" />
                             </group>
                         </page>
                     </notebook>

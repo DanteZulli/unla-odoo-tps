@@ -31,6 +31,16 @@ class EstateProperty(models.Model):
         string="Orientación del jardín",
     )
     garden_area = fields.Integer(string="Superficie jardín")
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type", string="Tipo Propiedad"
+    )
+    buyer_id = fields.Many2one(comodel_name="res.partner", string="Comprador")
+    salesman_id = fields.Many2one(
+        comodel_name="res.users",
+        string="Vendedor",
+        copy=False,
+        default=lambda self: self.env.user,
+    )
     state = fields.Selection(
         selection=[
             ("new", "Nuevo"),
