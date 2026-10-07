@@ -109,3 +109,38 @@ constraints, comandos relacionales, herencia, wdb. Módulo `estate_account`.
   y precio en la propiedad, la pasa a "oferta aceptada" y rechaza las
   demás (`offer_ids - offer`).
 - ([3749784](https://github.com/DanteZulli/unla-odoo-tps/commit/3749784))
+
+## Act. 17 — Nombres únicos
+
+- `UNIQUE(name)` en tipos y etiquetas. Si hay duplicados en base, el
+  Upgrade falla: hay que limpiarlos desde la UI antes.
+- ([23e140e](https://github.com/DanteZulli/unla-odoo-tps/commit/23e140e))
+
+## Act. 18 — Oferta única por partner/propiedad
+
+- `UNIQUE(partner_id, property_id)` en ofertas (limpiar duplicados antes
+  desde la UI).
+- ([23e140e](https://github.com/DanteZulli/unla-odoo-tps/commit/23e140e))
+
+## Act. 19 — `offer_partner_ids`
+
+- Many2many computado con todos los ofertantes
+  (`offer_ids.partner_id`, depends en `offer_ids.partner_id`).
+- ¿Serviría un related? No: el related sigue un único camino M2O; acá hay
+  que juntar los partners de N ofertas, eso pide cómputo.
+- ([a1a4625](https://github.com/DanteZulli/unla-odoo-tps/commit/a1a4625))
+
+## Act. 20 — Oferta automática
+
+- Botón en la página Ofertas: precio = esperado ±30% (`random.uniform`),
+  ofertante al azar entre contactos activos que aún no ofertaron
+  (`random.choice` + `not in`); `UserError` si no hay precio o no quedan
+  candidatos.
+- ([a690d63](https://github.com/DanteZulli/unla-odoo-tps/commit/a690d63))
+
+## Act. 21 — Botones de etiquetas
+
+- "Sacar etiquetas" (`Command.clear`), "Cargar todas las etiquetas"
+  (`Command.set`) y "A estrenar" (crea+vincula con `Command.link` si no
+  existe). Comandos relacionales sin escribir la tabla intermedia a mano.
+- ([a690d63](https://github.com/DanteZulli/unla-odoo-tps/commit/a690d63))
