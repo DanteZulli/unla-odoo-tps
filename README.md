@@ -54,5 +54,7 @@ requiere tener instalados `real_estate` y `account`.
 
 ## Registro de avance
 
-- [Unidad 1 (Acts. 1–16)](docs/unidad-1-avance.md) — `real_estate`: modelos,
-  vistas, menús y seguridad.
+- [Unidad 1 (Acts. 1–41)](docs/unidad-1-avance.md) — `real_estate`: modelos,
+  vistas, menús, seguridad y relaciones (tipo, etiquetas, ofertas).
+- [Unidad 2](docs/unidad-2-avance.md) — computados, ORM, constraints,
+  herencia y `estate_account` (en curso).

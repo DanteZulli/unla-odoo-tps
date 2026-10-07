@@ -1,4 +1,4 @@
-# Unidad 1 — Registro de avance (Acts. 1–16)
+# Unidad 1 — Registro de avance (Acts. 1–41)
 
 Módulo `real_estate`: modelos, vistas, menús y seguridad. Entorno Odoo 19
 sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
@@ -188,3 +188,131 @@ sobre Doodba (la guía pide Odoo 18; acá puertos `19xxx`).
   `<group>` pelado. Validado en local contra `search_view.rng`.
 - ([64baf46](https://github.com/DanteZulli/unla-odoo-tps/commit/64baf46),
   [46277af](https://github.com/DanteZulli/unla-odoo-tps/commit/46277af))
+
+## Act. 25 — Modelo `estate.property.type`
+
+- `models/estate_property_type.py` con `name` Char requerido + import en
+  `models/__init__.py`. Solo el modelo: sin vistas todavía Odoo genera
+  lista/form automáticos.
+- ([8662f6a](https://github.com/DanteZulli/unla-odoo-tps/commit/8662f6a))
+
+## Act. 26 — Accesos sobre tipos
+
+- Manager full (`1,1,1,1`), Vendedor solo lectura, mismo esquema que
+  `estate.property`.
+- ([c8c4bc3](https://github.com/DanteZulli/unla-odoo-tps/commit/c8c4bc3))
+
+## Act. 27 — Acción de tipos
+
+- `views/estate_property_type_views.xml` con `ir.actions.act_window`
+  "Tipos de propiedad" (`list,form`). Sin vistas propias al principio;
+  después se agregó lista explícita (ver Act. 33).
+- ([99bce12](https://github.com/DanteZulli/unla-odoo-tps/commit/99bce12))
+
+## Act. 28 — Menú Ajustes
+
+- Primer nivel "Ajustes" bajo "Inmobiliaria" + submenú "Tipos de propiedad"
+  a la acción. El xml de tipos va antes del menú en el manifest (orden
+  `data` por dependencias, como en Act. 6).
+- Nota de debugging: con solo vistas autogeneradas el browser se colgaba
+  al abrir Tipos (servidor 200, sin loop de red); con lista explícita se
+  estabilizó. Pendiente confirmar causa raíz del lado cliente/Wayland.
+- ([99bce12](https://github.com/DanteZulli/unla-odoo-tps/commit/99bce12))
+
+## Act. 29 — Many2one en propiedad
+
+- `property_type_id` a `estate.property.type` ("Tipo Propiedad"),
+  `buyer_id` a `res.partner` ("Comprador"), `salesman_id` a `res.users`
+  ("Vendedor", `copy=False`, `default=lambda self: self.env.user`).
+- Lo aprendido: el Many2one guarda el id del relacionado y Odoo muestra su
+  `display_name`; `default` con `env.user` deja al logueado como vendedor.
+- ([7ee5da0](https://github.com/DanteZulli/unla-odoo-tps/commit/7ee5da0))
+
+## Act. 30 — Formulario con relaciones
+
+- `property_type_id` en el primer grupo sobre el código postal; nueva
+  notebook "Más info." con Comprador y Vendedor.
+- ([7ee5da0](https://github.com/DanteZulli/unla-odoo-tps/commit/7ee5da0))
+
+## Act. 31 — Modelo `estate.property.tag`
+
+- `models/estate_property_tag.py` con `name` requerido,
+  `_description` "Etiqueta de propiedad"; se normalizó `_description` en
+  los otros dos ("Propiedad", "Tipo de propiedad"). Sirve para el
+  display name en errores y vistas genéricas.
+- ([72f1897](https://github.com/DanteZulli/unla-odoo-tps/commit/72f1897))
+
+## Act. 32 — Accesos sobre etiquetas
+
+- Manager full, Vendedor lectura (mismo patrón tipos/ofertas).
+- ([11a1728](https://github.com/DanteZulli/unla-odoo-tps/commit/11a1728))
+
+## Act. 33 — Listas editables
+
+- `views/estate_property_tag_views.xml`: acción "Etiquetas de propiedad"
+  solo `list` + lista con `name` y `editable="top"` (alta rápida sin form).
+- `editable="top"` también en la lista de tipos: crear tipos desde la
+  lista sin formulario.
+- ([84316a1](https://github.com/DanteZulli/unla-odoo-tps/commit/84316a1))
+
+## Act. 34 — Menú de etiquetas
+
+- Submenú "Etiquetas de propiedad" bajo Ajustes a la acción de etiquetas;
+  xml de etiquetas antes del menú en el manifest.
+- ([84316a1](https://github.com/DanteZulli/unla-odoo-tps/commit/84316a1))
+
+## Act. 35 — `tag_ids` Many2many
+
+- `tag_ids = fields.Many2many("estate.property.tag", string="Etiquetas")`
+  en `estate.property`.
+- ¿Por qué many2many y no many2one/one2many? Una propiedad lleva varias
+  etiquetas y una etiqueta marca muchas propiedades (N a N). Con Many2one
+  solo habría una etiqueta por propiedad; con One2many haría falta un FK
+  inverso en la etiqueta apuntando a una sola propiedad. El M2M crea la
+  tabla intermedia solo.
+- ([e980901](https://github.com/DanteZulli/unla-odoo-tps/commit/e980901))
+
+## Act. 36 — Etiquetas en vistas
+
+- `tag_ids` debajo del `name` en el form y como columna en la lista, con
+  `widget="many2many_tags"`. Sin widget se ve como lista cruda/cantidad;
+  con widget, pills clickeables.
+- ([e980901](https://github.com/DanteZulli/unla-odoo-tps/commit/e980901))
+
+## Act. 37 — Modelo `estate.property.offer`
+
+- `models/estate_property_offer.py` (`_description` "Oferta sobre propiedad"):
+  `price` Float requerido, `status` Selection Aceptada/Rechazada,
+  `partner_id` M2O a `res.partner` requerido, `property_id` M2O a
+  `estate.property` requerido.
+- ([3c613aa](https://github.com/DanteZulli/unla-odoo-tps/commit/3c613aa))
+
+## Act. 38 — Accesos sobre ofertas
+
+- Manager full, Vendedor lectura.
+- ([75bdd64](https://github.com/DanteZulli/unla-odoo-tps/commit/75bdd64))
+
+## Act. 39 — `offer_ids` One2many
+
+- `offer_ids = fields.One2many("estate.property.offer", "property_id",
+  string="Ofertas")` en propiedad.
+- ¿Por qué el `inverse_name`? La One2many no tiene columna propia: lee las
+  ofertas cuyo `property_id` apunta a esta propiedad; `inverse_name` dice
+  cuál es ese FK. Es virtual: no crea columna, es la vista inversa del M2O.
+- ([75bdd64](https://github.com/DanteZulli/unla-odoo-tps/commit/75bdd64))
+
+## Act. 40 — Lista de ofertas sin acción
+
+- `views/estate_property_offer_views.xml` con lista `editable="top"`
+  (price, partner_id, status), sin `ir.actions.act_window` ni menú.
+- ¿Por qué no hace falta acción? La lista solo se usa embebida dentro del
+  form de propiedad (Act. 41); no hay entrada de menú propia. El menú de
+  todas las ofertas recién llega en Unidad 2 Act. 12.
+- ([ca377f0](https://github.com/DanteZulli/unla-odoo-tps/commit/ca377f0))
+
+## Act. 41 — Página Ofertas
+
+- Página "Ofertas" en el form de propiedad con `<field name="offer_ids" />`,
+  que levanta la lista del Act. 40. Cierre de Unidad 1: modelo relacional
+  completo tipo–propiedad–etiquetas–ofertas.
+- ([ca377f0](https://github.com/DanteZulli/unla-odoo-tps/commit/ca377f0))
