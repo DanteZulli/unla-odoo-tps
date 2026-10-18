@@ -2,14 +2,15 @@
 
 **Alcance:** contenido hasta la Guía 2 (Unidad 1, Unidad 2, Material Teórico y Programa).
 La Unidad 3 (asistentes/wizards, QWeb, reportes, cron, MailHog, pytest, traducciones) queda
-**fuera del examen**.
+**fuera de esta materia por ahora**.
 
-**Formato de examen:** multiple choice, marcar la **única** opción correcta. Puede venir teoría
-pura o ejemplos de los prácticos (mismo formato).
+**Qué es este documento:** un apunte de **teoría + snippets** para leer, entender y razonar.
+Todo el código del curso lo resuelve la IA; lo importante es que puedas explicar *qué hace*
+cada concepto y *para qué cambia cada cosa*.
 
 > **Nota de versión:** la guía está armada sobre **Odoo 18** (puertos `18xxx`). Tu entorno local
 > corre **Odoo 19** (puertos `19xxx`), por eso hay un par de diferencias señaladas con el sello
-> **⚠ Odoo 19**. En el examen, respondé pensando en **Odoo 18**.
+> **⚠ Odoo 19**. Los ejemplos de la guía corresponden a **Odoo 18**.
 
 ---
 
@@ -30,11 +31,8 @@ pura o ejemplos de los prácticos (mismo formato).
 13. [Herencia (modelos, métodos, vistas, módulos)](#tema-13--herencia-modelos-métodos-vistas-módulos)
 14. [Lógica de negocio: botones, UserError, ondelete, create](#tema-14--lógica-de-negocio-botones-usererror-ondelete-create)
 15. [Respuestas a los "¿por qué?" de la guía](#tema-15--respuestas-a-los-por-qué-de-la-guía)
-16. [Trampas típicas de multiple choice](#tema-16--trampas-típicas-de-multiple-choice)
-17. [Simulacro: 25 preguntas tipo examen con respuestas](#tema-17--simulacro-25-preguntas-tipo-examen-con-respuestas)
-18. [Simulacro de código: snippets y qué pasa](#tema-18--simulacro-de-código-snippets-y-qué-pasa)
-19. [Checklist final](#tema-19--checklist-final)
-20. [Anexo — Hoja de ruta: repaso de 1 página](#anexo--hoja-de-ruta-repaso-de-1-página)
+16. [Checklist final](#tema-16--checklist-final)
+17. [Anexo — Hoja de ruta: repaso de 1 página](#anexo--hoja-de-ruta-repaso-de-1-página)
 
 ---
 
@@ -73,7 +71,7 @@ pura o ejemplos de los prácticos (mismo formato).
 
 > La materia trabaja sobre la versión **Community**.
 
-### Tecnologías de Odoo (para preguntas "¿con qué está hecho?")
+### Tecnologías de Odoo
 
 - **Python** (lenguaje principal), **PostgreSQL** (base de datos), **XML** (vistas/acciones/menús),
   **JS/OWL** (frontend), **QWeb** (motor de plantillas para reportes/web), **Docker** (entornos
@@ -120,7 +118,7 @@ real_estate/
 └── i18n/                    # traducciones (.po/.pot) [se usa en Unidad 3]
 ```
 
-**Preguntas típicas de examen:**
+**Puntos clave:**
 
 - ¿Dónde van los modelos? → `models/`, e **incluyendo el archivo en `models/__init__.py`**
   y ese paquete en el `__init__.py` del módulo. Si olvidás el import, Python no llega a
@@ -325,7 +323,7 @@ Además de tus campos, Odoo crea en **toda** tabla:
 
 Esto responde al ejercicio 4 de la Unidad 1: esos son los campos adicionales que vas a ver.
 
-### Convenciones de nombres (importante para MC)
+### Convenciones de nombres
 
 - Many2one → sufijo **`_id`** (`buyer_id`).
 - One2many y Many2many → sufijo **`_ids`** (`offer_ids`, `tag_ids`).
@@ -368,8 +366,8 @@ funcionales (Contabilidad, Ventas...) que combinan permisos.
 ```
 
 - **⚠ Odoo 19:** tu repo usa `privilege_id` + modelo `res.groups.privilege`. En **Odoo 18
-  (examen)** el campo es **`category_id`** apuntando a `ir.module.category`. Aprendete la
-  forma de Odoo 18 para el examen y la de tu entorno para codear.
+  (guía)** el campo es **`category_id`** apuntando a `ir.module.category`. Pensá en
+  `category_id` con la guía; si codeás en tu Odoo 19, `privilege_id`.
 - **`implied_ids`** (grupo implícito): si el Manager *implica* al Vendedor, todo Manager es
   automáticamente también Vendedor (`eval="[(4, ref('group_estate_salesman'))]"`).
 
@@ -411,7 +409,7 @@ access_estate_property_salesman,estate.property.salesman,model_estate_property,r
 - **Reglas por fila, permisos en acumulativo**: un usuario puede tener varias filas
   (por varios grupos) y se **suma** lo permitido.
 
-**Casos típicos de examen:**
+**Casos que trabaja la guía:**
 
 1. *¿A qué tipo de usuario representa `base.group_user`?* → **Usuario interno** (empleado).
 2. *¿Cómo le das crear/modificar/eliminar además de leer?* → cambiar los `0` por `1` en las
@@ -490,7 +488,7 @@ tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Etiquetas
 - **Ambos lados pueden tener muchos**: una propiedad tiene muchas etiquetas y una etiqueta
   puede estar en muchas propiedades.
 
-**¿Por qué `tag_ids` es Many2many y no Many2one ni One2many?** (pregunta fija de examen)
+**¿Por qué `tag_ids` es Many2many y no Many2one ni One2many?**
 
 - **Many2one no sirve**: solo permitiría **una etiqueta por propiedad** (necesitamos muchas).
 - **One2many no sirve** (desde `estate.property`): implicaría que la FK está en el lado de la
@@ -498,7 +496,7 @@ tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Etiquetas
   debe poder usarse en varias propiedades). Además habría que poner el campo en `tag`.
 - **Many2many** modela exactamente la relación **N:N** de la realidad.
 
-### Resumen de elección (tabla para el examen)
+### Resumen de elección (tabla de referencia)
 
 | Situación | Relación | Se guarda en... |
 |---|---|---|
@@ -639,7 +637,7 @@ Estructura típica (la que pide la guía, ejercicio 23 U1):
   con `bg_color` (p. ej. `bg-success`, `bg-warning`).
 - **Botones**: `type="object"` llama a un **método del modelo** (`name="action_sold"`);
   `type="action"` dispara otra acción; también hay `type="object"` con `confirm` etc.
-- **`invisible="..."`**: expresión estilo Python (Odoo 17+). En el examen pensá en Odoo 18 →
+- **`invisible="..."`**: expresión estilo Python (Odoo 17+). En la guía (Odoo 18) se usa
   esta sintaxis, **no** el viejo `attrs="{'invisible': [...]}"`.
   - Ideal: **validación en backend** (`raise UserError`) **+ visibilidad en frontend**
     (esconder el botón según estado): la guía lo pide así (ej. 15 U2).
@@ -712,8 +710,8 @@ menú. (Y ahí sí se puede agrupar por tipo, porque `property_type_id` es relat
 
 ## Tema 8 — Campos computados, related, depends, inverse, store
 
-> **Tema estrella del examen.** La guía dice literalmente *"campos computados"* como ejemplo
-> de tema suelto. Dominá esta sección.
+> **Tema central de la guía.** *"Campos computados"* figura como tema de estudio propio;
+> acá está todo lo que lo rodea: store, depends, related e inverse.
 
 ### Campo computado
 
@@ -767,7 +765,7 @@ no tengo que volver a calcular, simplemente leo la base y me ahorro el costo"*.
 - Se pueden indicar **rutas**: `@api.depends("offer_ids.price")` (best_offer),
   `@api.depends("offer_ids.partner_id")` (offer_partner_ids).
 
-**Pregunta clásica:** *"¿Por qué con `store=True` solo no recalcula y con `depends` sí?"*
+**Duda típica:** *"¿Por qué con `store=True` solo no recalcula y con `depends` sí?"*
 → Porque `store` decide **dónde** vive el valor y `depends` define **las dependencias que
 Odoo debe vigilar** para reprogramar el cálculo al escribir en ellas. Son atributos
 independientes que trabajan juntos.
@@ -1035,7 +1033,7 @@ Command.set([ids])         # (6, 0, ids)
 - Uso típico: `record.tag_ids = [Command.create({'name': 'A estrenar'})]` → crea la etiqueta
   **y** la vincula. Equivale a `[(0, 0, {'name': 'A estrenar'})]`.
 
-### delete vs unlink y clear vs set (la pregunta trampa)
+### delete vs unlink y clear vs set (la diferencia clave)
 
 - `Command.unlink(id)` → la etiqueta **desaparece de la propiedad pero sigue existiendo**
   en `estate.property.tag`. `Command.delete(id)` → además de romper el vínculo, **borra el
@@ -1104,7 +1102,7 @@ def _check_price(self):
 - **Diferencia clave con onchange**: el onchange solo "avisa" en el formulario; el
   `@api.constrains` **bloquea el guardado** venga por donde venga la escritura desde Odoo.
 
-### Resumen de validaciones (fórmula para el examen)
+### Resumen de validaciones (qué mecanismo uso)
 
 `onchange` (UX, no bloquea) < `@api.constrains` (bloquea en ORM, Python) <
 `_sql_constraints` (bloquea siempre, SQL). Y `UserError` para botones/lógica de negocio.
@@ -1134,7 +1132,7 @@ class ResUsers(models.Model):
   padre (es otra tabla/otro modelo).
 - **`_inherits = {'padre': 'campo_m2o'}`** → herencia por **delegación**: el hijo "presta"
   los campos del padre a través de un Many2one (no confundir con `_inherit`; es el patrón de
-  `res.partner` en usuarios). No usado en los prácticos, pero puede salir en MC.
+  `res.partner` en usuarios). No se usa en los prácticos de la guía; sirve para entender la diferencia con `_inherit`.
 
 **¿Hace falta `ir.model.access.csv` para el modelo que hereda `res.users`?**
 → **NO.** Al usar `_inherit` sin `_name` **no se crea un modelo nuevo ni una tabla nueva**:
@@ -1274,8 +1272,7 @@ Botón en la lista de ofertas → al aceptar una:
 
 ## Tema 15 — Respuestas a los "¿por qué?" de la guía
 
-> Cada "¿por qué?"/"¿qué pasa si...?" de la guía es un candidato directo a multiple choice.
-> Acá están todos, en orden.
+> Los "¿por qué?" y "¿qué pasa si...?" que dejó la guía, explicados uno por uno, en orden.
 
 ### Unidad 1
 
@@ -1380,441 +1377,9 @@ que **ya tiene sus permisos**.
 
 ---
 
-## Tema 16 — Trampas típicas de multiple choice
+## Tema 16 — Checklist final
 
-### No confundir
-
-| Tema | Opción correcta | Trampas habituales |
-|---|---|---|
-| `base.group_user` | Usuario **interno** (empleado/backend) | "portal", "público", "superusuario" |
-| ACL CSV sin `group_id` | Aplica a **todos** los usuarios | "a nadie", "solo a admin" |
-| Usuario sin grupo con ACL | **AccessError**, cero acceso | "solo lectura por defecto" |
-| Campo **no store** | **No** existe en la tabla; se calcula al mostrar | "se guarda al final del día" |
-| `store=True` sin `depends` | Se guarda pero **no se recalcula** | "se recalcula solo siempre" |
-| `@api.depends` | Define **qué cambios disparan** el recomputo | "define el tipo del campo" |
-| `related` default | **No store** y **readonly** | "se guarda y es editable" |
-| `related` + `store=True` | Se guarda → **permite buscar/agrupar** | "related nunca se guarda" |
-| `inverse=` | Hace el computado **editable** y calcula al revés | "hace store automático" |
-| One2many `inverse_name` | Campo **m2o del hijo** por el que se resuelve | "es la primary key" |
-| One2many | **Virtual**: sin tabla/columna propia | "crea una columna en el padre" |
-| Many2many | **Tabla intermedia** | "FK en el padre" |
-| `unlink` relacional (3) vs `delete` (2) | unlink = **desvincula**; delete = **borra el registro** | al revés |
-| `Command.clear()` | Desvincula **todos** | "borra todos los registros" |
-| `Command.set([ids])` | Reemplaza por **exactamente** esos ids | "agrega los ids" |
-| `onchange` | Solo **cliente/UX**, **no bloquea**, no corre al escribir desde código | "valida en backend" |
-| `@api.constrains` | Corre en **create/write del ORM**, bloquea | "corre al abrir el form" |
-| `_sql_constraints` | Motor **PostgreSQL**, siempre activo | "es Python" |
-| `UserError` | Botones/lógica de negocio (servidor) | "es un warning de onchange" |
-| `@api.ondelete` | Valida borrado; **no reimplementa** `unlink` | "es lo mismo que unlink" |
-| `_inherit` sin `_name` | **Mismo modelo/tabla** (extiende), **no necesita ACL nueva** | "crea tabla nueva" |
-| `_inherit` con `_name` | Modelo nuevo copiando al padre | "es delegación" |
-| `_inherits` | **Delegación** vía Many2one al padre | "mezcla de tablas" |
-| `super()` en método | Ejecuta la **versión original** y sigue | "no hace falta" |
-| `data` en manifest | **Orden importa**; menús después de acciones | "orden alfabético libre" |
-| `depends` en manifest | Módulos que deben estar **instalados antes** | "campos que observa el cómputo" |
-| Vista por defecto sin lista propia | Muestra **solo el nombre** | "todas las columnas" |
-| `editable="top"` | Editar/crear **en línea** en la lista | "abre el formulario" |
-| Agrupar/buscar por campo | Solo si tiene **columna** (store o related store) | "cualquier campo" |
-| `view_mode="form"` solo | Abre **directamente el form** | "no abre nada" |
-| `view_mode="list"` solo | **No permite** abrir el detalle | "abre la lista y ya" |
-| `copy=False` | No se copia **al duplicar** | "no se puede guardar" |
-| `required=True` | UI obligatorio **y NOT NULL en BD** | "solo UI" |
-| Duplicar (Acción → Duplicar) | Llama a `copy()`; aplica `copy=False` | "crea registro vacío" |
-| `default` con lambda | Se evalúa **por registro/env** (usuario actual) | "se evalúa al importar" |
-| `store=True` + `depends` cruzado a otro modelo | **Riesgo de rendimiento** (recomputa miles) | "nunca hay riesgo" |
-
-### Sintaxis que puede salir en ejemplos de código
-
-- Orden correcto: grupos (XML) **antes** que `ir.model.access.csv`; vistas/acciones **antes**
-  que menús.
-- `model_id:id` del CSV = `model_estate_property` (puntos → guiones bajos, con prefijo `model_`).
-- Filtro por usuario actual en search: `domain="[('create_uid', '=', uid)]"`.
-- Agrupar: `context="{'group_by': 'create_date:month'}"`.
-- Botón: `type="object"` → método; `type="action"` → otra acción.
-- Odoo 18: `<list>` (no `<tree>`), `invisible="..."` directo (no `attrs`).
-
----
-
-## Tema 17 — Simulacro: 25 preguntas tipo examen con respuestas
-
-> Para entrenar el formato. Leé la pregunta, pensá la respuesta y recién después mirá la ✔.
-
-**1. El campo `base.group_user` representa a:**
-a) Portal  b) Usuario interno  c) Público  d) SuperUsuario
-**✔ b)** Usuario interno (backend/empleado).
-
-**2. Un usuario que no pertenece a ningún grupo con permisos sobre `estate.property` al
-intentar leer registros obtiene:**
-a) Lista vacía sin error  b) AccessError  c) Lectura limitada a 10 filas  d) Se lo hace
-SuperUsuario automáticamente
-**✔ b)** Sin ACL no hay acceso → AccessError.
-
-**3. En `ir.model.access.csv`, una fila con `group_id:id` vacío significa que los permisos...**
-a) no se aplican a nadie  b) aplican solo al admin  c) aplican a **todos** los usuarios
-d) aplican solo a SuperUsuario
-**✔ c)** Vacío = sin grupo = everyone (¡peligro!).
-
-**4. Para que un usuario pueda además de leer crear, modificar y borrar, en la fila del CSV
-debe haber `1` en:**
-a) solo `perm_read`  b) `perm_write, perm_create, perm_unlink`
-c) `perm_create` y `perm_unlink`  d) ninguna de las anteriores, eso va en XML
-**✔ b)** Las cuatro columnas CRUD.
-
-**5. Un campo computado sin `store=True`:**
-a) genera una columna en la tabla  b) **no** genera columna y se calcula al mostrarlo
-c) se almacena recién al cerrar sesión  d) solo funciona en vistas lista
-**✔ b)** Se calcula en memoria en cada render; por eso no aparece en pgweb.
-
-**6. Con `store=True` pero sin `@api.depends`, al modificar un campo de origen:**
-a) Odoo lanza error  b) el campo **no se recalcula**  c) se recalcula igual  d) el campo deja
-de existir
-**✔ b)** Sin dependencias registradas no hay recomputo programado.
-
-**7. ¿Cuál es el rol de `@api.depends`?**
-a) Indicar el tipo del campo  b) Declarar qué campos, al modificarse, **re-disparan** el
-cómputo  c) Hacer el campo editable  d) Guardarlo en BD
-**✔ b)** Vigila dependencias; `store` decide si se guarda.
-
-**8. `best_offer` (máximo de las ofertas) conviene almacenarlo:**
-a) siempre  b) solo si hay menos de 100 registros  c) **no**, no hace falta almacenarlo
-d) solo si es related
-**✔ c)** Se muestra en formulario y depende de otro modelo → no store.
-
-**9. Un campo `related` por defecto:**
-a) se almacena y es editable  b) **no se almacena y es solo lectura**  c) se almacena y es
-solo lectura  d) no se almacena y es editable
-**✔ b)** Solo cambia si le agregás `store=True` (y sigue readonly).
-
-**10. Un related con `store=True` permite además:**
-a) escribir sobre él  b) **buscar y agrupar** por ese campo  c) que se comporte como onchange
-d) nada extra
-**✔ b)** Al tener columna, entra en búsquedas y group by (ofertas por tipo).
-
-**11. `inverse=` en un campo computado sirve para:**
-a) guardarlo en BD  b) hacerlo recalculable  c) **que deje de ser solo lectura** y recalcular
-lo contrario  d) definir la relación con otro modelo
-**✔ c)** Ej.: escribir `date_deadline` recalcula `validity`.
-
-**12. En `fields.One2many(comodel_name=..., inverse_name=...)`, el `inverse_name` es:**
-a) la primary key de la tabla  b) el nombre del campo **Many2one del modelo hijo** que apunta
-al padre  c) el nombre de la tabla intermedia  d) un campo calculado
-**✔ b)** Odoo resuelve la relación inversa por ese m2o.
-
-**13. La relación One2many es "virtual" porque:**
-a) no tiene valor hasta guardar  b) **no crea columna ni tabla propia**: es la vista inversa
-de un Many2one existente en el hijo  c) existe solo en las vistas  d) usa XML
-**✔ b)** La FK vive en el modelo hijo.
-
-**14. Una propiedad con muchas etiquetas y una etiqueta en muchas propiedades se modela con:**
-a) Many2one  b) One2many  c) **Many2many**  d) related
-**✔ c)** Relación N:N con tabla intermedia.
-
-**15. `Command.clear()` aplicado a `tag_ids`:**
-a) borra todas las etiquetas de la BD  b) **desvincula todos los vínculos** (siguen existiendo
-las etiquetas)  c) borra el campo  d) hace lo mismo que `delete`
-**✔ b)** `Command.delete(id)` sí borraría el registro.
-
-**16. `tag_ids = [Command.unlink(id)]` sobre una etiqueta:**
-a) borra la etiqueta de la tabla  b) **solo desvincula**; la etiqueta sigue existiendo
-c) la vincula otra vez  d) lanza UserError
-**✔ b)** unlink = romper vínculo; delete = borrar registro.
-
-**17. `tag_ids = [Command.create({'name': 'A estrenar'})]`:**
-a) solo vincula si existe  b) **crea** el registro **y** lo vincula  c) solo crea sin vincular
-d) borra y crea
-**✔ b)** Equivale a `(0, 0, {...})`.
-
-**18. El comando relacional `2` corresponde a:**
-a) create  b) update  c) **delete (borrar el registro)**  d) unlink (desvincular)
-**✔ c)** 2 = delete, 3 = unlink.
-
-**19. Un `@api.onchange`:**
-a) bloquea el guardado si falla  b) **corre solo en el cliente al editar y no bloquea**  c)
-corre en cada `write()` del ORM  d) es lo mismo que un sql_constraint
-**✔ b)** Es UX; las reglas de negocio van con UserError/constrains.
-
-**20. ¿Cuál garantiza que la regla se cumple incluso si alguien escribe SQL directo?**
-a) onchange  b) UserError en botón  c) **`_sql_constraints`**  d) widget statusbar
-**✔ c)** Es restricción de PostgreSQL.
-
-**21. Un `UNIQUE(partner_id, property_id)` en ofertas significa:**
-a) que cada partner es único  b) que cada propiedad es única  c) **que la combinación
-partner+propiedad no se repite** (no puede ofertar 2 veces la misma propiedad)  d) que no hay
-nulos
-**✔ c)** Unicidad compuesta.
-
-**22. Un modelo con `_inherit = "res.users"` (sin `_name`) y un campo nuevo:**
-a) crea una tabla nueva y necesita ACL nueva  b) **extiende el mismo modelo/tabla y NO
-necesita ACL nueva**  c) borra `res.users`  d) requiere `depends` de dos módulos
-**✔ b)** Herencia prototipo: sigue siendo `res.users`, que ya tiene permisos.
-
-**23. En un módulo que extiende un método de otro, para no perder el comportamiento original
-hay que:**
-a) copiar y pegar el código  b) **llamar a `super()`**  c) borrar el método base  d) usar
-`copy=False`
-**✔ b)** Herencia de métodos con `super()`.
-
-**24. En el manifest, `real_estate_menuitem.xml` debe incluirse:**
-a) antes que las vistas/acciones  b) **después** (el menú referencia la acción por XML ID)
-c) en `demo`  d) da igual el orden
-**✔ b)** El orden de `data` es el orden de carga.
-
-**25. `@api.ondelete(at_uninstall=False)` es preferible a redefinir `unlink()` porque:**
-a) es más rápido  b) solo valida/bloquea el borrado sin reimplementar la lógica ni romper la
-desinstalación  c) permite borrar más registros  d) evita usar UserError
-**✔ b)** Forma recomendada por Odoo para proteger registros.
-
----
-
-## Tema 18 — Simulacro de código: snippets y qué pasa
-
-> Misma mecánica: mirá el snippet, pensá la respuesta y recién después la ✔.
-
-**1. Definís un campo y lo verificás en pgweb:**
-
-```python
-total_area = fields.Float(string="Superficie total", compute="_compute_total_area")
-```
-
-¿Aparece `total_area` como columna en la tabla `estate_property`? ¿Y en el formulario?
-**✔ No hay columna** (no tiene `store=True`); **sí se ve en el formulario**, porque Odoo lo
-calcula en memoria al renderizar la vista.
-
-**2.** (Mismo campo, ahora con `store=True` pero **sin** `@api.depends`.) El usuario modifica
-`living_area` y guarda. ¿Qué valor tiene `total_area`?
-**✔ El valor viejo (desactualizado)**: hay columna, pero Odoo no conoce las dependencias →
-no dispara recomputo. Con `@api.depends("living_area", "garden_area")` sí se recalcula.
-
-**3. En la consola / un método:**
-
-```python
-record.tag_ids = [Command.clear()]
-# vs
-record.tag_ids = [Command.delete(tag.id)]
-```
-
-¿Cuál deja a la propiedad sin etiquetas **y además borra** la etiqueta de la BD?
-**✔ `delete`** (rompe vínculo **y** borra el registro). `clear()` solo vacía los vínculos
-(las etiquetas siguen existiendo). Y `unlink(id)` desvincula **una sola** sin borrarla.
-
-**4. Manifest:**
-
-```python
-"data": [
-    "views/real_estate_menuitem.xml",      # action="action_estate_property"
-    "views/estate_property_views.xml",
-],
-```
-
-¿Qué pasa al actualizar el módulo?
-**✔ Falla**: el menú referencia por `ref` la acción (`External ID not found`) que **todavía
-no se creó**. El orden de `data` es el orden de carga → **acciones/vistas primero**.
-
-**5. `ir.model.access.csv`:**
-
-```csv
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ep_all,estate.property.all,model_estate_property,,1,1,1,1
-```
-
-¿Quién tiene estos permisos?
-**✔ Todos los usuarios** (grupo vacío = sin restricción), incluidos portal y público. Para
-restringirlo hay que poner el XML ID del grupo (p. ej. `real_estate.group_estate_manager`).
-
-**6.**
-
-```python
-offer_ids = fields.One2many("estate.property.offer", string="Ofertas")
-```
-
-¿Funciona? ¿Por qué?
-**✔ No**: falta el **`inverse_name`** (`"property_id"`). Sin ese Many2one del hijo Odoo no
-sabe cómo resolver la relación inversa (y la O2M es virtual: no tiene columna propia).
-
-**7.**
-
-```python
-self.env["estate.property"].search([("total_area", ">", 50)])
-```
-
-`total_area` es computado **sin store**. ¿Qué ocurre?
-**✔ No se puede buscar** por ese campo (no hay columna): Odoo rechaza el filtro ("campo no
-almacenado/no buscable"). Para buscar: `store=True` o implementar un método `_search`.
-
-**8. Onchange:**
-
-```python
-@api.onchange("garden")
-def _onchange_garden(self):
-    self.garden_area = 10 if self.garden else 0
-```
-
-a) El usuario tilda Jardín y aprieta **Cancelar**: ¿queda `garden_area = 10`?
-b) Otro módulo hace `prop.write({"garden": True})`: ¿corre el onchange?
-**✔ a) No** (el onchange vive en el formulario y no persiste; cancelar descarta).
-**✔ b) No**: los onchange corren **solo en el cliente al editar**; `write()` desde código no
-los dispara.
-
-**9.**
-
-```python
-self.env["estate.property"].browse(ids).write({"state": "canceled"})
-```
-
-con 5 ids. ¿Qué pasa?
-**✔ Los 5 registros** quedan `canceled`: `write()` aplica el **mismo diccionario** a todo el
-recordset. Por eso los métodos propios iteran `for record in self`.
-
-**10. Dominio:**
-
-```python
-[("|", ("state", "=", "new"), ("state", "=", "canceled"))]
-```
-
-¿Qué selecciona?
-**✔ Propiedades Nuevas O Canceladas**: `|` combina los **dos operandos siguientes**; sin
-prefijos, las tuplas se combinan con **Y**.
-
-**11. Duplicar (Acción → Duplicar) un registro con:**
-
-```python
-selling_price = fields.Float(string="Precio de venta", copy=False)
-state = fields.Selection(..., default="new", copy=False)
-salesman_id = fields.Many2one(..., copy=False, default=lambda self: self.env.user)
-```
-
-¿Qué valores tiene el duplicado en esos tres campos?
-**✔** `selling_price` → **0.0** (no se copia), `state` → su **default** ("new"),
-`salesman_id` → **el usuario que duplica** (default corriente, no el original). Los campos
-`copy=False` no heredan el valor del original.
-
-**12.**
-
-```python
-@api.constrains("price")
-def _check_price(self):
-    if self.price <= 0:
-        raise ValidationError("Precio inválido.")
-```
-
-a) Se dispara al guardar desde el formulario? b) Al `create()` de otro módulo vía ORM?
-c) Con un `UPDATE` hecho a mano en pgweb?
-**✔ a) Sí** (guardar usa `create`/`write` del ORM). **✔ b) Sí.**
-**✔ c) No**: `@api.constrains` es Python en el ORM; para SQL directo hace falta un
-`_sql_constraints`.
-
-**13. En `estate.property.tag`:**
-
-```python
-_sql_constraints = [("unique_tag_name", "UNIQUE(name)", "El nombre debe ser único")]
-```
-
-Se inserta una etiqueta `name='Luminosa'` existente. ¿Qué ocurre?
-**✔ Rechaza PostgreSQL** y Odoo muestra el mensaje "El nombre debe ser único". Por eso
-hay que **limpiar duplicados antes** de agregar el constraint o la actualización del módulo
-falla.
-
-**14.**
-
-```python
-@api.ondelete(at_uninstall=False)
-def _unlink_if_new_or_cancelled(self):
-    for record in self:
-        if record.state not in ("new", "canceled"):
-            raise UserError("Solo se pueden borrar Nuevas o Canceladas.")
-```
-
-Se intenta `prop.unlink()` con `state == 'sold'`. ¿Y si el módulo se desinstala?
-**✔ Primero**: lanza **UserError** y **no borra**. **Al desinstalar** (`at_uninstall=False`)
-Odoo **se salta** este chequeo para poder limpiar sus registros; con `unlink()` redefinido y
-bloqueo fijo, la desinstalación se rompería.
-
-**15.**
-
-```python
-class ResUsers(models.Model):
-    _inherit = "res.users"
-
-    property_ids = fields.One2many("estate.property", "salesman_id")
-```
-
-¿Se crea una tabla nueva? ¿Hay que agregar líneas en `ir.model.access.csv`?
-**✔ No a ambas**: `_inherit` **sin `_name`** fusiona en el modelo/tabla existente
-`res_users`, que **ya tiene sus permisos**. (Haría falta ACL si hubiera `_name` nuevo.)
-
-**16. Redefinición "trucha" de `create`:**
-
-```python
-@api.model_create_multi
-def create(self, vals_list):
-    for vals in vals_list:
-        if vals.get("price", 0) <= 0:
-            raise UserError("Precio inválido")
-    # ¿falta algo?
-```
-
-¿Qué pasa si no se agrega nada más?
-**✔ No se crea ningún registro**: falta **`records = super().create(vals_list)`** y
-`return records`. Toda redefinición de métodos core debe **llamar a `super()`**.
-
-**17. Acción con `view_mode = "form"` únicamente.**
-**✔** Al usarla (menú/botón) Odoo abre **directamente el formulario** — sin listado previo.
-Con `"list"` solo, en cambio, **no hay forma de entrar al detalle** de un registro.
-
-**18.**
-
-```python
-property_type_id = fields.Many2one(related="property_id.property_type_id")        # sin store
-```
-
-En la vista de todas las ofertas: ¿se puede "Agrupar por tipo de propiedad"?
-**✔ No** (no hay columna → no se puede agrupar ni buscar). Con **`store=True`** sí, que es
-justo lo que pide la guía para poder agrupar las ofertas por tipo.
-
-**19.** La propiedad tiene etiquetas `[A, B, C]` y se ejecuta:
-
-```python
-record.tag_ids = [Command.set([tag_b.id])]
-```
-
-**✔** Queda **solo B**: `set` **reemplaza** toda la relación por la lista dada (desvincula A
-y C; no las borra). `clear()` la dejaría **vacía**; `link(tag_b.id)` dejaría `[A, B, C]`.
-
-**20. En la vista:**
-
-```xml
-<button name="action_sold" string="Vender" type="object"/>
-```
-
-¿A qué llama y qué pasa si el método no existe?
-**✔** Al método **`action_sold(self)`** del modelo, con el registro actual (es `type="object"`;
-`type="action"` en cambio dispararía otra acción de Odoo). Si el método no existe → **error**
-al hacer clic (y si no valida con `UserError`, el estado podría quedar en un valor inválido).
-
-**21.**
-
-```python
-date_availability = fields.Date(
-    copy=False,
-    default=lambda self: fields.Date.add(fields.Date.today(), months=3),
-)
-```
-
-¿Qué valor tiene el default en un registro creado **el 1 de julio**?
-**✔ 1 de octubre** (hoy + 3 meses). Es una **función**, evaluada **al crear cada registro**
-(con el `self`/env actual), no al importar el módulo. `copy=False`: al duplicar, no se copia
-la fecha original.
-
-**22.** Un campo con `compute` **y** `inverse` (`date_deadline` / `validity`):
-¿qué pasa si el usuario escribe la fecha a mano?
-**✔** Odoo deja de tratarlo como solo lectura y llama al **inverso**, que recalcula
-`validity = date_deadline - create_date`. Sin `inverse`, el campo no sería editable.
-
----
-
-## Tema 19 — Checklist final
-
-Antes del examen, asegurate de poder explicar/enunciar de memoria:
+Cuando quieras autoevaluarte, asegurate de poder explicar/enunciar de memoria:
 
 - [ ] Definición de ERP y qué lo hace "integrado" + qué es Odoo (open source, Python, PyMEs,
       Community vs Enterprise).
@@ -1840,7 +1405,7 @@ Antes del examen, asegurate de poder explicar/enunciar de memoria:
 - [ ] Herencia: `_inherit` (con/sin `_name`), `_inherits`, `super()` en métodos, herencia de
       vistas, `depends` entre módulos (`estate_account`).
 - [ ] `@api.ondelete` vs `unlink()`; redefinir `create()` con `@api.model_create_multi`.
-- [ ] Los 25 ítems del Tema 15 (los "¿por qué?" de la guía) — son los más probables.
+- [ ] Todos los "¿por qué?" del Tema 15, explicados con tus palabras.
 
 > Consejo de estudio: los ejercicios ya los tenés hechos; repasá **tu propio código**
 > (`real_estate`, `estate_account`) preguntándote *"¿por qué está escrito así?"* — con este
@@ -1850,7 +1415,7 @@ Antes del examen, asegurate de poder explicar/enunciar de memoria:
 
 ## Anexo — Hoja de ruta (repaso de 1 página)
 
-> Para el repaso de las 2 horas previas. Si entendés estas 20 líneas, entendés la materia.
+> Repaso rápido de conceptos. Si entendés estas líneas, entendés la materia.
 
 ### Las 10 reglas de oro
 
@@ -1873,22 +1438,6 @@ Antes del examen, asegurate de poder explicar/enunciar de memoria:
    `at_uninstall=False` no rompe la desinstalación).
 10. **`copy=False` = no se copia al duplicar**; `default` con lambda se evalúa por registro;
     `required` = UI + NOT NULL.
-
-### Palabra clave en la pregunta → concepto
-
-| Si la pregunta dice... | Pensá en... |
-|---|---|
-| "no aparece en pgweb pero sí en la vista" | campo computado **sin store** |
-| "ya no se recalcula / quedó desactualizado" | `store=True` **sin `@api.depends`** |
-| "agrupar por X" / "buscar por X" | ¿X **tiene columna**? (store o related store) |
-| "el usuario ingresa la fecha a mano" | **`inverse=`** |
-| "adviene pero no bloquea / posible tipeo" | **`onchange` con `warning`** |
-| "no puede ofertar dos veces" | `UNIQUE(partner_id, property_id)` |
-| "desvincular vs borrar" | Command **unlink(3)** vs **delete(2)** |
-| "no se ven los menús" | **permisos/ACL** (o actualización/caché) → SuperUsuario |
-| "extender `res.users` / módulo nativo" | **`_inherit` sin `_name`** + `super()` + herencia de vista |
-| "crear factura al vender" | `estate_account`: `move_type="out_invoice"` + `Command.create` en `line_ids` |
-| "cuándo sí y cuándo no almacenar" | ¿se busca? ¿se agrupa? ¿se muestra en lista? ¿depende de otro modelo? |
 
 ### Fichas exprés
 
